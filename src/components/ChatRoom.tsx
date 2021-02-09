@@ -1,5 +1,5 @@
 import React from 'react';
-import { List, ListItem, Divider, ListItemText, ListItemAvatar, Paper, IconButton, InputBase, Avatar } from '@material-ui/core';
+import { List, ListItem, Divider, ListItemText, ListItemAvatar, Paper, IconButton, InputBase, Avatar, Card, CardActions, CardContent, Button } from '@material-ui/core';
 import SendIcon from '@material-ui/icons/Send';
 import { MessageModel, MessageToSendModel } from 'domain/message-model';
 
@@ -10,6 +10,8 @@ const URL = "wss://imr3-react.herokuapp.com";
 type ChatRoomState = {
     data: MessageModel[],
     connected: boolean,
+    name: string,
+    message: string
 }
 
 export class ChatRoom extends React.Component<{}, ChatRoomState> {
@@ -22,65 +24,109 @@ export class ChatRoom extends React.Component<{}, ChatRoomState> {
         this.state = {
             data: [],
             connected: false,
+            name: "",
+            message: ""
         }
 
         this.ws = new WebSocket(URL);
-        this.bottomRef = React.createRef();
+        this.bottomRef = React.createRef(); // to scroll down when new message appear
 
+        // To be able to access to 'this' when came from event
         this.submitMessage = this.submitMessage.bind(this);
+        this.initializeWebsocket = this.initializeWebsocket.bind(this);
+        this.onChangeName = this.onChangeName.bind(this);
+        this.onChangeMessage = this.onChangeMessage.bind(this);
     }
 
     componentDidMount() {
-        this.ws.onopen = () => {
-            console.info("[WS] Connected!");
-            this.setState({
-                connected: true
-            });
-        }
+        this.initializeWebsocket();
+    }
 
-        this.ws.onclose = () => {
-            console.info("[WS] Disconnected!");
-            this.setState({
-                connected: false
-            });
-            this.ws = new WebSocket(URL);
-        }
+    initializeWebsocket() {
+        if (this.ws.readyState === WebSocket.CLOSING) {
+            setTimeout(() => {
+                this.initializeWebsocket();
+            }, 1000);
+        } else {
+            if (this.ws.readyState === WebSocket.CLOSED) this.ws = new WebSocket(URL)
 
-        this.ws.onmessage = evt => {
-            console.info("[WS] Message received!");
-            const messages: MessageModel[] = JSON.parse(evt.data).sort(
-                (o1: MessageModel, o2: MessageModel) => (o1.when > o2.when ? 1 : -1)
-            );
-            this.setState((prevState: ChatRoomState) => (
-                {
-                    connected: true,
-                    data: prevState.data.concat(messages)
-                }
-            ));
-            this.bottomRef.current.scrollIntoView();
+            this.ws.onopen = () => {
+                console.info("[WS] Connected!");
+                this.setState({
+                    connected: true
+                });
+            }
+
+            this.ws.onclose = () => {
+                console.info("[WS] Disconnected!");
+                this.setState({
+                    connected: false
+                });
+                this.initializeWebsocket();
+            }
+
+            this.ws.onmessage = evt => {
+                console.info("[WS] Message received!");
+                const messages: MessageModel[] = JSON.parse(evt.data).sort(
+                    (o1: MessageModel, o2: MessageModel) => (o1.when > o2.when ? 1 : -1)
+                );
+                this.setState((prevState: ChatRoomState) => (
+                    {
+                        connected: true,
+                        data: prevState.data.concat(messages)
+                    }
+                ));
+                if (this.bottomRef.current) this.bottomRef.current.scrollIntoView();
+            }
         }
     }
 
+    // Form (to send message) functions
+    onChangeName(e: React.ChangeEvent<HTMLInputElement>) {
+        this.setState({
+            name: e.currentTarget.value
+        });
+    }
+    onChangeMessage(e: React.ChangeEvent<HTMLInputElement>) {
+        this.setState({
+            message: e.currentTarget.value
+        });
+    }
     submitMessage(e: React.FormEvent<HTMLDivElement>) {
         e.preventDefault();
-        // TODO add 'moment' if it's possible
 
-        const target = e.target as typeof e.target & {
-            name: { value: string };
-            message: { value: string };
-        };
         const msg: MessageToSendModel = {
-            name: target.name.value,
-            message: target.message.value,
+            name: this.state.name,
+            message: this.state.message,
         }
 
-        if (msg.name !== "" && msg.message !== "")
+        if (msg.name !== "" && msg.message !== "") {
             this.ws.send(JSON.stringify(msg));
+            // reset message
+            this.setState({
+                message: ""
+            });
+        }
+    }
+
+    formatTimestamp(timestamp: string) {
+        const date = new Date(timestamp);
+
+        const year = date.getFullYear();
+        const month = "0" + date.getMonth();
+        const day = "0" + date.getDate();
+        const hours = date.getHours();
+        const minutes = "0" + date.getMinutes();
+        const seconds = "0" + date.getSeconds();
+
+        // Will display time in 10:30:23 25/10/2021 format
+        return hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2) + " " + day.substr(-2) + "/" + month.substr(-2) + "/" + year;
     }
 
     render() {
-        return (
-            <div className="Chatroom">
+        let chatlist;
+        if (this.state.connected)
+            chatlist = (
                 <List>
                     {this.state.data.map((item: MessageModel, index: number) => (
                         <div key={index}>
@@ -90,10 +136,11 @@ export class ChatRoom extends React.Component<{}, ChatRoomState> {
                                         {item.name.charAt(0)}
                                     </Avatar>
                                 </ListItemAvatar>
-                                <ListItemText
-                                    primary={item.name}
-                                    secondary={item.message}
-                                >
+                                <ListItemText secondary={item.message}>
+                                    <span>
+                                        {item.name}
+                                        <i className="date">{this.formatTimestamp(item.when)}</i>
+                                    </span>
                                 </ListItemText>
                             </ListItem>
                             <Divider />
@@ -101,12 +148,28 @@ export class ChatRoom extends React.Component<{}, ChatRoomState> {
                     ))}
                     <span ref={this.bottomRef}></span>
                 </List>
-                <Divider className="thick-divider" />
+            )
+        else
+            chatlist = (
+                <div>
+                    <Card>
+                        <CardContent>
+                            <h3>{this.ws.readyState === WebSocket.CONNECTING ? "Connecting..." : "Disconnected from the chat..."}</h3>
+                        </CardContent>
+                        <CardActions>
+                            <Button onClick={this.initializeWebsocket} variant="contained" disabled={this.ws.readyState === WebSocket.CONNECTING}>Reconnect</Button>
+                        </CardActions>
+                    </Card>
+                </div>
+            )
+        return (
+            <div className="Chatroom">
+                {chatlist}
                 <Paper component="form" className="chatform" onSubmit={this.submitMessage}>
                     <Avatar className="avatar" />
-                    <InputBase placeholder="Votre nom" name="name" />
+                    <InputBase placeholder="Your name" value={this.state.name} onChange={this.onChangeName} />
                     <Divider orientation="vertical" flexItem />
-                    <InputBase className="ipt" placeholder="Votre message" name="message" />
+                    <InputBase className="ipt" placeholder="Your message" value={this.state.message} onChange={this.onChangeMessage} />
                     <IconButton type="submit" aria-label="send" disabled={!this.state.connected}>
                         <SendIcon />
                     </IconButton>

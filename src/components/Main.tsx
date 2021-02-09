@@ -39,11 +39,11 @@ export class Main extends React.Component<{}, MainStateState> {
 
     render() {
         return (
-            <Grid container>
+            <Grid container spacing={2} className="body">
                 <Grid className="flex" item xs={8}>
                     <VideoPlayer film={this.state.data?.Film} />
                 </Grid>
-                <Grid className="relative" item xs={4}>
+                <Grid item xs={4}>
                     <ChatRoom />
                 </Grid>
             </Grid>

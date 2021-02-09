@@ -1,9 +1,9 @@
 .Chatroom {
-    height: calc(100% - 60px - 3px);
-    box-sizing: border-box;
+    height: 100%;
+    background-color: #ececec;
 }
 .Chatroom > :first-child {
-    height: 100%;
+    height: calc(100% - 60px);
 }
 .Chatroom > ul {
     overflow-x: hidden;
@@ -21,10 +21,11 @@
     margin-left: 5px;
 }
 
-.Chatroom .thick-divider {
-    height: 2px !important;
-}
-
 .Chatroom .avatar {
     margin: 10px;
+}
+
+.Chatroom .date {
+    font-size: 13px;
+    float: right;
 }
