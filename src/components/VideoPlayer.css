@@ -1,0 +1,13 @@
+#video {
+    width: 100%;
+    width: -moz-available;          /* For Mozzila */
+    width: -webkit-fill-available;  /* For Chrome */
+    width: stretch;                 /* Unprefixed */
+    height: 480px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: black;
+    color: white;
+}
