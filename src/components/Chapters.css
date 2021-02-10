@@ -6,3 +6,10 @@
 .tooltipTitle {
     font-size: 13px;
 }
+
+.chapter_list .MuiChip-root {
+    margin: 5px;
+}
+.chapter_list a {
+    cursor: pointer;
+}

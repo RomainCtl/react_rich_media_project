@@ -8,11 +8,12 @@ import './Keywords.css';
 type KeywordsProps = {
     keywords?: KeywordModel[];
     onTimeSelected: Function;
+    current_time?: number;
 }
 
 export class Keywords extends React.Component<KeywordsProps> {
     render() {
-        const { keywords, onTimeSelected } = this.props;
+        const { keywords, onTimeSelected, current_time } = this.props;
         if (keywords) {
             return (
                 <div className="keywords">
@@ -22,6 +23,7 @@ export class Keywords extends React.Component<KeywordsProps> {
                                 {obj.data.map((d, s_index) => (
                                     <Chip
                                         key={s_index}
+                                        color={(current_time || 0) > parseInt(obj.pos) ? "primary" : "default"}
                                         size="small"
                                         label={<Link
                                             target="_blank"

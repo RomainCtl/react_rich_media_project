@@ -135,6 +135,7 @@ export class Main extends React.Component<{}, MainStateState> {
                     {/* Kaywords */}
                     <TabPanel value={tab_value} index={2}>
                         <Keywords
+                            current_time={current_time}
                             keywords={data?.Keywords}
                             onTimeSelected={this.handleCurrentTime} />
                     </TabPanel>
