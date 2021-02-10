@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, AppBar, Tabs, Tab } from '@material-ui/core';
+import { Grid, AppBar, Tabs, Tab, Alert, CircularProgress } from '@material-ui/core';
 import { DataModel } from 'domain/data-model';
 import { VideoPlayer } from 'components/VideoPlayer';
 import { ChatRoom } from 'components/ChatRoom';
@@ -71,7 +71,7 @@ export class Main extends React.Component<{}, MainStateState> {
 
     render() {
         const { data_loaded, current_time, duration, data, tab_value } = this.state;
-        return (
+        const main = (
             <Grid container spacing={2} className="body">
                 <Grid className="flex" item md={8} sm={12}>
                     <VideoPlayer
@@ -111,5 +111,21 @@ export class Main extends React.Component<{}, MainStateState> {
                 </Grid>
             </Grid>
         );
+
+        if (data_loaded) {
+            return main;
+        } else {
+            return (
+                <div>
+                    <div className="blurBackground">
+                        {main}
+                    </div>
+                    <div className="blurContent">
+                        <Alert severity="info">Loading data...
+                        <CircularProgress size={20} /></Alert>
+                    </div>
+                </div>
+            );
+        }
     }
 }

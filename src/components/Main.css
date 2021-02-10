@@ -22,3 +22,26 @@
 .chat {
     height: calc(100% + 16px); /* 16 for the spacing between them (item of grid) */
 }
+
+.blurBackground {
+    -webkit-filter: blur(5px);
+    -moz-filter: blur(5px);
+    -o-filter: blur(5px);
+    -ms-filter: blur(5px);
+    filter: blur(5px);
+}
+
+.blurContent {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    position: absolute;
+    z-index: 9999;
+}
+.blurContent .MuiAlert-message {
+    font-size: 20px;
+}
+.blurContent .MuiAlert-icon {
+    font-size: 30px;
+}
