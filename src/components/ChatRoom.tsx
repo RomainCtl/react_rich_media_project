@@ -133,7 +133,7 @@ export class ChatRoom extends React.Component<{}, ChatRoomState> {
                             <ListItem alignItems="flex-start">
                                 <ListItemAvatar>
                                     <Avatar>
-                                        {item.name.charAt(0)}
+                                        {item.name ? item.name.charAt(0) : ""}
                                     </Avatar>
                                 </ListItemAvatar>
                                 <ListItemText secondary={item.message}>

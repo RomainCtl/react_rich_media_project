@@ -19,6 +19,6 @@
     padding: 10px;
 }
 
-.MuiGrid-item {
+.chat {
     height: calc(100% + 16px); /* 16 for the spacing between them (item of grid) */
 }

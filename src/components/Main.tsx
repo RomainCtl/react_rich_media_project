@@ -4,12 +4,14 @@ import { DataModel } from 'domain/data-model';
 import { VideoPlayer } from 'components/VideoPlayer';
 import { ChatRoom } from 'components/ChatRoom';
 import { TabPanel } from 'components/TabPanel';
+import { Chapters } from 'components/Chapters';
 
 import "./Main.css";
 
 type MainStateState = {
     data_loaded: boolean,
     current_time: number,
+    duration: number,
     data?: DataModel,
     tab_value: number,
 }
@@ -22,10 +24,13 @@ export class Main extends React.Component<{}, MainStateState> {
         this.state = {
             data_loaded: false,
             current_time: 0,
+            duration: 0,
             tab_value: 0
         }
 
         this.tabsHandleChange = this.tabsHandleChange.bind(this);
+        this.handleCurrentTime = this.handleCurrentTime.bind(this);
+        this.handleDuration = this.handleDuration.bind(this);
     }
 
     componentDidMount() {
@@ -52,6 +57,11 @@ export class Main extends React.Component<{}, MainStateState> {
             current_time: new_current_time
         });
     }
+    handleDuration(duration: number) {
+        this.setState({
+            duration: duration
+        });
+    }
 
     tabsHandleChange(e: React.ChangeEvent<{}>, new_value: number) {
         this.setState({
@@ -60,18 +70,23 @@ export class Main extends React.Component<{}, MainStateState> {
     }
 
     render() {
+        const { data_loaded, current_time, duration, data, tab_value } = this.state;
         return (
             <Grid container spacing={2} className="body">
-                <Grid className="flex" item xs={8}>
-                    <VideoPlayer film={this.state.data?.Film} current_time={this.state.current_time} onTimeUpdate={this.handleCurrentTime} />
+                <Grid className="flex" item md={8} sm={12}>
+                    <VideoPlayer
+                        film={data?.Film}
+                        current_time={current_time}
+                        onDurationLoaded={this.handleDuration}
+                        onTimeUpdate={this.handleCurrentTime} />
                 </Grid>
-                <Grid item xs={4}>
+                <Grid className="chat" item md={4} sm={12}>
                     <ChatRoom />
                 </Grid>
                 <Grid item xs={12}>
                     <AppBar position="static">
                         <Tabs
-                            value={this.state.tab_value}
+                            value={tab_value}
                             onChange={this.tabsHandleChange}
                             variant="fullWidth"
                             className="tabBaseColor">
@@ -80,13 +95,17 @@ export class Main extends React.Component<{}, MainStateState> {
                             <Tab label="Keywords" />
                         </Tabs>
                     </AppBar>
-                    <TabPanel value={this.state.tab_value} index={0}>
-                        Tab one
+                    <TabPanel value={tab_value} index={0}>
+                        <Chapters
+                            current_time={current_time}
+                            max_time={duration}
+                            chapters={data?.Chapters}
+                            onSelectTime={this.handleCurrentTime} />
                     </TabPanel>
-                    <TabPanel value={this.state.tab_value} index={1}>
+                    <TabPanel value={tab_value} index={1}>
                         Tab two
                     </TabPanel>
-                    <TabPanel value={this.state.tab_value} index={2}>
+                    <TabPanel value={tab_value} index={2}>
                         Tab three
                     </TabPanel>
                 </Grid>

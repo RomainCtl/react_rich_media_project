@@ -1,0 +1,8 @@
+.timeline {
+    height: 10px !important;
+    border-radius: 5px;
+}
+
+.tooltipTitle {
+    font-size: 13px;
+}

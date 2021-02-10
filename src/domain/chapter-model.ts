@@ -1,4 +1,4 @@
 export type ChapterModel = {
-    pos: string, // timestamp (sec)
+    pos: string, // seconde
     title: string, // chapter title
 }
