@@ -7,6 +7,7 @@ import "./VideoPlayer.css";
 type VideoPlayerProps = {
     film?: FilmModel;
     current_time?: number; // seconde
+    onTimeUpdate?: Function;
 }
 
 export class VideoPlayer extends React.Component<VideoPlayerProps> {
@@ -14,6 +15,7 @@ export class VideoPlayer extends React.Component<VideoPlayerProps> {
         super(props);
 
         this.onLoadedMetadata = this.onLoadedMetadata.bind(this);
+        this.onTimeUpdate = this.onTimeUpdate.bind(this);
     }
 
     onLoadedMetadata(e: React.SyntheticEvent<HTMLVideoElement>) {
@@ -22,12 +24,18 @@ export class VideoPlayer extends React.Component<VideoPlayerProps> {
         }
     }
 
+    onTimeUpdate(e: React.SyntheticEvent<HTMLVideoElement>) {
+        if (this.props.onTimeUpdate) {
+            this.props.onTimeUpdate(e.currentTarget.currentTime);
+        }
+    }
+
     render() {
         const { film } = this.props;
         if (film !== undefined) {
             return (
                 <div id="video">
-                    <video height="480" src={film.file_url} controls onLoadedMetadata={this.onLoadedMetadata}>
+                    <video height="480" src={film.file_url} controls onLoadedMetadata={this.onLoadedMetadata} onTimeUpdate={this.onTimeUpdate}>
                         Your browser does not support HTML video
                     </video>
                 </div>
