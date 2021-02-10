@@ -5,6 +5,7 @@ import { VideoPlayer } from 'components/VideoPlayer';
 import { ChatRoom } from 'components/ChatRoom';
 import { TabPanel } from 'components/TabPanel';
 import { Chapters } from 'components/Chapters';
+import { Map } from 'components/Map';
 
 import "./Main.css";
 
@@ -103,7 +104,10 @@ export class Main extends React.Component<{}, MainStateState> {
                             onSelectTime={this.handleCurrentTime} />
                     </TabPanel>
                     <TabPanel value={tab_value} index={1}>
-                        Tab two
+                        <Map
+                            current_time={current_time}
+                            waypoints={data?.Waypoints}
+                            onPointTimeSelected={this.handleCurrentTime} />
                     </TabPanel>
                     <TabPanel value={tab_value} index={2}>
                         Tab three

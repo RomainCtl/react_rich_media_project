@@ -29,7 +29,6 @@ export class VideoPlayer extends React.Component<VideoPlayerProps> {
             const time_diff = prevProps.current_time - this.props.current_time;
             // Do not update if diff < 1 (to prevent the update on playing)
             if (time_diff < -1 || time_diff > 1) {
-                console.log(time_diff, prevProps.current_time, this.props.current_time);
                 this.playerRef.current.currentTime = this.props.current_time;
             }
         }
