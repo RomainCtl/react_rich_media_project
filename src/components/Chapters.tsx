@@ -1,6 +1,7 @@
 import React from "react";
 import { CircularProgress, LinearProgress, Tooltip, Typography, List, ListItem, ListItemText, Divider } from '@material-ui/core';
 import { ChapterModel } from 'domain/chapter-model';
+import secToReadable from 'utils/sec-to-readable';
 
 import "./Chapters.css";
 
@@ -29,21 +30,6 @@ export class Chapters extends React.Component<ChaptersProps, ChaptersState> {
 
         this.handleProgressClick = this.handleProgressClick.bind(this);
         this.updateHoverChapter = this.updateHoverChapter.bind(this);
-    }
-
-    /**
-     * Transform seconde to "hh/mm/ss" format
-     * @param sec
-     */
-    secToReadable(sec: string) {
-        const date = new Date(1970, 0, 1);
-        date.setSeconds(parseInt(sec));
-
-        const hours = date.getHours();
-        const minutes = "0" + date.getMinutes();
-        const seconds = "0" + date.getSeconds();
-
-        return hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
     }
 
     /**
@@ -143,7 +129,7 @@ export class Chapters extends React.Component<ChaptersProps, ChaptersState> {
                                     <ListItemText
                                         onClick={() => this.props.onSelectTime(parseInt(chapter.pos))}
                                         primary={chapter.title}
-                                        secondary={<i>{this.secToReadable(chapter.pos)}</i>} />
+                                        secondary={<i>{secToReadable(chapter.pos)}</i>} />
                                 </ListItem>
                                 {index !== chapters.length - 1 && <Divider />}
                             </div>

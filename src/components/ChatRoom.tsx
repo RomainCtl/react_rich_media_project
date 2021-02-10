@@ -85,7 +85,7 @@ export class ChatRoom extends React.Component<{}, ChatRoomState> {
                     }
                 ));
                 // scroll to bottom (to see newer message)
-                if (this.bottomRef.current) this.bottomRef.current.scrollIntoView();
+                this.bottomRef.current?.scrollIntoView({ block: 'end' });
             }
         }
     }
