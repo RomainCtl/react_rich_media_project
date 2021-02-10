@@ -5,6 +5,8 @@ import { VideoPlayer } from 'components/VideoPlayer';
 import { ChatRoom } from 'components/ChatRoom';
 import { TabPanel } from 'components/TabPanel';
 
+import "./Main.css";
+
 type MainStateState = {
     data_loaded: boolean,
     current_time: number,
@@ -70,7 +72,9 @@ export class Main extends React.Component<{}, MainStateState> {
                     <AppBar position="static">
                         <Tabs
                             value={this.state.tab_value}
-                            onChange={this.tabsHandleChange}>
+                            onChange={this.tabsHandleChange}
+                            variant="fullWidth"
+                            className="tabBaseColor">
                             <Tab label="Chapters" />
                             <Tab label="Map" />
                             <Tab label="Keywords" />

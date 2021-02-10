@@ -11,23 +11,3 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
-
-.body {
-  width: 100% !important;
-}
-
-.flex {
-  display: flex;
-}
-
-.MuiGrid-container {
-  display: flex;
-  justify-content: center;
-  position: relative;
-  height: 500px;
-  padding: 10px;
-}
-
-.MuiGrid-item {
-  height: calc(100% + 16px); /* 16 for the spacing between them (item of grid) */
-}
