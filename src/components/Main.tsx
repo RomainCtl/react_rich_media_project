@@ -6,6 +6,7 @@ import { ChatRoom } from 'components/ChatRoom';
 import { TabPanel } from 'components/TabPanel';
 import { Chapters } from 'components/Chapters';
 import { Map } from 'components/Map';
+import { Keywords } from 'components/Keywords';
 
 import "./Main.css";
 
@@ -133,7 +134,9 @@ export class Main extends React.Component<{}, MainStateState> {
                     </TabPanel>
                     {/* Kaywords */}
                     <TabPanel value={tab_value} index={2}>
-                        Tab three
+                        <Keywords
+                            keywords={data?.Keywords}
+                            onTimeSelected={this.handleCurrentTime} />
                     </TabPanel>
                 </Grid>
             </Grid>

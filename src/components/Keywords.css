@@ -1,0 +1,15 @@
+.keywords {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.keywords .MuiPaper-root {
+    margin: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.keywords .MuiChip-root {
+    margin: 2px;
+}
