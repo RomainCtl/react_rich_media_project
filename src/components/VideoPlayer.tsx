@@ -23,6 +23,10 @@ export class VideoPlayer extends React.Component<VideoPlayerProps> {
         this.onTimeUpdate = this.onTimeUpdate.bind(this);
     }
 
+    /**
+     * Each time react did update this component
+     * @param prevProps
+     */
     componentDidUpdate(prevProps: VideoPlayerProps) {
         // update video currentTime if needed
         if (prevProps.current_time && this.props.current_time) {
@@ -34,6 +38,12 @@ export class VideoPlayer extends React.Component<VideoPlayerProps> {
         }
     }
 
+    /**
+     * When 'video' metadata is loaded
+     * Set asked start time
+     * Send video duration to parent
+     * @param e
+     */
     onLoadedMetadata(e: React.SyntheticEvent<HTMLVideoElement>) {
         if (this.props.current_time) {
             e.currentTarget.currentTime = this.props.current_time;
@@ -43,6 +53,10 @@ export class VideoPlayer extends React.Component<VideoPlayerProps> {
         }
     }
 
+    /**
+     * When playing (not only), send new current_time to parent
+     * @param e
+     */
     onTimeUpdate(e: React.SyntheticEvent<HTMLVideoElement>) {
         if (this.props.onTimeUpdate) {
             this.props.onTimeUpdate(e.currentTarget.currentTime);
@@ -51,7 +65,7 @@ export class VideoPlayer extends React.Component<VideoPlayerProps> {
 
     render() {
         const { film } = this.props;
-        if (film !== undefined) {
+        if (film) {
             return (
                 <div id="video">
                     <video

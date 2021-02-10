@@ -38,10 +38,16 @@ export class ChatRoom extends React.Component<{}, ChatRoomState> {
         this.onChangeMessage = this.onChangeMessage.bind(this);
     }
 
+    /**
+     * One time, when component did mount
+     */
     componentDidMount() {
         this.initializeWebsocket();
     }
 
+    /**
+     * Initialize websocket variable and functions
+     */
     initializeWebsocket() {
         if (this.ws.readyState === WebSocket.CLOSING) {
             setTimeout(() => {
@@ -62,11 +68,13 @@ export class ChatRoom extends React.Component<{}, ChatRoomState> {
                 this.setState({
                     connected: false
                 });
+                // If closed, ask to reconnect
                 this.initializeWebsocket();
             }
 
             this.ws.onmessage = evt => {
                 console.info("[WS] Message received!");
+                // Get message and sort by date
                 const messages: MessageModel[] = JSON.parse(evt.data).sort(
                     (o1: MessageModel, o2: MessageModel) => (o1.when > o2.when ? 1 : -1)
                 );
@@ -76,6 +84,7 @@ export class ChatRoom extends React.Component<{}, ChatRoomState> {
                         data: prevState.data.concat(messages)
                     }
                 ));
+                // scroll to bottom (to see newer message)
                 if (this.bottomRef.current) this.bottomRef.current.scrollIntoView();
             }
         }
@@ -100,15 +109,20 @@ export class ChatRoom extends React.Component<{}, ChatRoomState> {
             message: this.state.message,
         }
 
+        // Send message
         if (msg.name !== "" && msg.message !== "") {
             this.ws.send(JSON.stringify(msg));
-            // reset message
+            // reset message (empty input)
             this.setState({
                 message: ""
             });
         }
     }
 
+    /**
+     * format timestamp to date (hh:mm:ss dd/MM/yy)
+     * @param timestamp
+     */
     formatTimestamp(timestamp: string) {
         const date = new Date(timestamp);
 

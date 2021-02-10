@@ -3,10 +3,12 @@ import { Button, CircularProgress } from '@material-ui/core';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import { WaypointModel } from 'domain/waypoint-model';
 
+// Import for the map
 import 'leaflet/dist/leaflet.css';
 import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 import L from 'leaflet';
+
 import './Map.css';
 
 type MapProps = {
@@ -32,6 +34,7 @@ export class Map extends React.Component<MapProps> {
     }
 
     render() {
+        // define map icon (to prevent error)
         let DefaultIcon = L.icon({
             iconUrl: icon,
             shadowUrl: iconShadow

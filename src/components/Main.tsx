@@ -34,6 +34,9 @@ export class Main extends React.Component<{}, MainStateState> {
         this.handleDuration = this.handleDuration.bind(this);
     }
 
+    /**
+     * One time, when component did mount
+     */
     componentDidMount() {
         fetch("https://imr3-react.herokuapp.com/backend")
             .then(res => res.json())
@@ -53,17 +56,32 @@ export class Main extends React.Component<{}, MainStateState> {
             });
     }
 
+    /**
+     * When 'current_time' change (can be from child component)
+     * @param new_current_time
+     */
     handleCurrentTime(new_current_time: number) {
         this.setState({
             current_time: new_current_time
         });
     }
+
+    /**
+     * When 'duration' change (from child component)
+     * It is for the progress bar (max current_time)
+     * @param duration
+     */
     handleDuration(duration: number) {
         this.setState({
             duration: duration
         });
     }
 
+    /**
+     * Select which tab to display (chapters, map, keywords)
+     * @param e
+     * @param new_value
+     */
     tabsHandleChange(e: React.ChangeEvent<{}>, new_value: number) {
         this.setState({
             tab_value: new_value
@@ -74,6 +92,7 @@ export class Main extends React.Component<{}, MainStateState> {
         const { data_loaded, current_time, duration, data, tab_value } = this.state;
         const main = (
             <Grid container spacing={2} className="body">
+                {/* Video player */}
                 <Grid className="flex" item md={8} sm={12}>
                     <VideoPlayer
                         film={data?.Film}
@@ -81,6 +100,7 @@ export class Main extends React.Component<{}, MainStateState> {
                         onDurationLoaded={this.handleDuration}
                         onTimeUpdate={this.handleCurrentTime} />
                 </Grid>
+                {/* Chatroom */}
                 <Grid className="chat" item md={4} sm={12}>
                     <ChatRoom />
                 </Grid>
@@ -96,6 +116,7 @@ export class Main extends React.Component<{}, MainStateState> {
                             <Tab label="Keywords" />
                         </Tabs>
                     </AppBar>
+                    {/* Chapters */}
                     <TabPanel value={tab_value} index={0}>
                         <Chapters
                             current_time={current_time}
@@ -103,12 +124,14 @@ export class Main extends React.Component<{}, MainStateState> {
                             chapters={data?.Chapters}
                             onSelectTime={this.handleCurrentTime} />
                     </TabPanel>
+                    {/* Waypoints */}
                     <TabPanel value={tab_value} index={1}>
                         <Map
                             current_time={current_time}
                             waypoints={data?.Waypoints}
                             onPointTimeSelected={this.handleCurrentTime} />
                     </TabPanel>
+                    {/* Kaywords */}
                     <TabPanel value={tab_value} index={2}>
                         Tab three
                     </TabPanel>
