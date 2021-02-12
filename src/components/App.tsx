@@ -1,12 +1,12 @@
 import React from 'react';
 import { Grid, AppBar, Tabs, Tab, Alert, CircularProgress } from '@material-ui/core';
 import { DataModel } from 'domain/data-model';
-import { VideoPlayer } from 'components/VideoPlayer';
-import { ChatRoom } from 'components/ChatRoom';
-import { TabPanel } from 'components/TabPanel';
-import { Chapters } from 'components/Chapters';
-import { Map } from 'components/Map';
-import { Keywords } from 'components/Keywords';
+import { VideoPlayer } from 'components/videoplayer/VideoPlayer';
+import { ChatRoom } from 'components/chatroom/ChatRoom';
+import { TabPanel } from 'components/tabpanel/TabPanel';
+import { Chapters } from 'components/chapter/Chapters';
+import { Map } from 'components/map/Map';
+import { Keywords } from 'components/keywords/Keywords';
 
 import "./App.css";
 
