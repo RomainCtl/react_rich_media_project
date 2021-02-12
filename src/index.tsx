@@ -3,10 +3,10 @@ import ReactDOM from 'react-dom';
 import 'index.css';
 import reportWebVitals from 'reportWebVitals';
 
-import { Main } from 'components/Main';
+import { App } from 'components/App';
 
 ReactDOM.render(
-  <Main />,
+  <App />,
   document.getElementById('root')
 );
 

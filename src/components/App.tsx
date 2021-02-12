@@ -8,9 +8,9 @@ import { Chapters } from 'components/Chapters';
 import { Map } from 'components/Map';
 import { Keywords } from 'components/Keywords';
 
-import "./Main.css";
+import "./App.css";
 
-type MainStateState = {
+type AppStateState = {
     data_loaded: boolean,
     current_time: number,
     duration: number,
@@ -18,7 +18,7 @@ type MainStateState = {
     tab_value: number,
 }
 
-export class Main extends React.Component<{}, MainStateState> {
+export class App extends React.Component<{}, AppStateState> {
 
     constructor(props: any) {
         super(props);
