@@ -57,14 +57,14 @@ export class ChatRoom extends React.Component<{}, ChatRoomState> {
             if (this.ws.readyState === WebSocket.CLOSED) this.ws = new WebSocket(URL)
 
             this.ws.onopen = () => {
-                console.info("[WS] Connected!");
+                console.debug("[WS] Connected!");
                 this.setState({
                     connected: true
                 });
             }
 
             this.ws.onclose = () => {
-                console.info("[WS] Disconnected!");
+                console.debug("[WS] Disconnected!");
                 this.setState({
                     connected: false
                 });
@@ -73,7 +73,7 @@ export class ChatRoom extends React.Component<{}, ChatRoomState> {
             }
 
             this.ws.onmessage = evt => {
-                console.info("[WS] Message received!");
+                console.debug("[WS] Message received!");
                 // Get message and sort by date
                 const messages: MessageModel[] = JSON.parse(evt.data).sort(
                     (o1: MessageModel, o2: MessageModel) => (o1.when > o2.when ? 1 : -1)

@@ -42,14 +42,14 @@ export class App extends React.Component<{}, AppStateState> {
         fetch("https://imr3-react.herokuapp.com/backend")
             .then(res => res.json())
             .then((res: DataModel) => {
-                console.info(res);
+                console.debug(res);
                 this.setState({
                     data_loaded: true,
                     data: res
                 });
             })
             .catch(err => {
-                console.info("Error!!");
+                console.debug("Error!!");
                 console.error(err);
                 this.setState({
                     data_loaded: false,
