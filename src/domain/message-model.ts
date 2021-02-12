@@ -1,5 +1,3 @@
-import { type } from "os";
-
 export type MessageModel = {
     when: string, // timestamp (reception by the server)
     name: string, // username

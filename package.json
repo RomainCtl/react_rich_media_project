@@ -47,6 +47,7 @@
     ]
   },
   "devDependencies": {
-    "@types/leaflet": "^1.5.21"
+    "@types/leaflet": "^1.5.21",
+    "jest-fetch-mock": "^3.0.3"
   }
 }
