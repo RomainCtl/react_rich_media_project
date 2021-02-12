@@ -19,7 +19,7 @@ describe("testing Chapter component", () => {
         expect(p).toBeInTheDocument();
     });
 
-    test("Renders with chapters without crashing", async () => {
+    test("Renders chapters without crashing", async () => {
         const props = {
             chapters: [mockChapterModel],
             onSelectTime: () => { },
@@ -35,7 +35,7 @@ describe("testing Chapter component", () => {
         });
     });
 
-    test("Renders with timeline without crashing", async () => {
+    test("Renders timeline without crashing", async () => {
         const props = {
             chapters: [mockChapterModel],
             onSelectTime: () => { },

@@ -48,6 +48,8 @@
   },
   "devDependencies": {
     "@types/leaflet": "^1.5.21",
-    "jest-fetch-mock": "^3.0.3"
+    "jest-fetch-mock": "^3.0.3",
+    "jest-websocket-mock": "^2.2.0",
+    "mock-socket": "^9.0.3"
   }
 }

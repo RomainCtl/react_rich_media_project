@@ -10,5 +10,4 @@ export const mockMessageModel: MessageModel = {
 export const mockMessageToSendModel: MessageToSendModel = {
     name: "username",
     message: "the message here",
-    moment: 45,
 };
