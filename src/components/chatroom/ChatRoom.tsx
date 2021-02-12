@@ -17,6 +17,10 @@ type ChatRoomState = {
 export class ChatRoom extends React.Component<{}, ChatRoomState> {
     private ws: WebSocket;
     private bottomRef: any;
+    // https://github.com/material-components/material-components-web-react/issues/434#issuecomment-449561024
+    // To prevent "Can't perform a React state update on an unmounted component. This is a no-op, but it indicates a memory leak in your application." error
+    private _isMounted: boolean = false;
+    private _to?: NodeJS.Timeout;
 
     constructor(props: any) {
         super(props);
@@ -42,7 +46,13 @@ export class ChatRoom extends React.Component<{}, ChatRoomState> {
      * One time, when component did mount
      */
     componentDidMount() {
+        this._isMounted = true;
         this.initializeWebsocket();
+    }
+
+    componentWillUnmount() {
+        this._isMounted = false;
+        if (this._to) clearTimeout(this._to);
     }
 
     /**
@@ -50,7 +60,7 @@ export class ChatRoom extends React.Component<{}, ChatRoomState> {
      */
     initializeWebsocket() {
         if (this.ws.readyState === WebSocket.CLOSING) {
-            setTimeout(() => {
+            this._to = setTimeout(() => {
                 this.initializeWebsocket();
             }, 1000);
         } else {
@@ -58,18 +68,22 @@ export class ChatRoom extends React.Component<{}, ChatRoomState> {
 
             this.ws.onopen = () => {
                 console.debug("[WS] Connected!");
-                this.setState({
-                    connected: true
-                });
+                if (this._isMounted)
+                    this.setState({
+                        connected: true
+                    });
             }
 
             this.ws.onclose = () => {
                 console.debug("[WS] Disconnected!");
-                this.setState({
-                    connected: false
-                });
-                // If closed, ask to reconnect
-                this.initializeWebsocket();
+                if (this._isMounted) {
+                    this.setState({
+                        data: [],
+                        connected: false
+                    });
+                    // If closed, ask to reconnect
+                    this.initializeWebsocket();
+                }
             }
 
             this.ws.onmessage = evt => {
